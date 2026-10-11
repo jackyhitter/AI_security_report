@@ -95,7 +95,7 @@ To run the full 83-task benchmark on a cloud GPU:
 ### Step 4: Generate Manuscript Tables & Figures
 Aggregate task summaries into paper tables and render publication charts:
 ```bash
-python scratch/build_paper_assets.py
+python src/build_paper_assets.py
 ```
 Outputs:
 - `paper/task_level_results.csv`
@@ -112,5 +112,5 @@ Outputs:
   ```
 - **PDF:**
   ```bash
-  python scratch/generate_pdf.py
+  python src/generate_pdf.py
   ```

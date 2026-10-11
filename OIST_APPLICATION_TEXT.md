@@ -21,11 +21,11 @@ The Whack-a-Mole Effect in AI Code Repair: Static-Analysis Findings and Code Com
 ```text
 As an independent undergraduate researcher at Punjab Engineering College, I investigated automated vulnerability remediation in AI-generated code. Large language models (LLMs) frequently generate insecure software, and a common mitigation strategy is "scanner-guided repair," wherein static analysis alerts are fed back to the model for iterative fixing. My project evaluated the "Whack-a-Mole" hypothesis: whether scanner-guided fixes successfully eliminate original findings, leave vulnerabilities unresolved, introduce secondary findings, or inflate code complexity.
 
-To test this systematically, I engineered an empirical pipeline integrating the LLMSecEval benchmark, open-weight models (Qwen2.5-Coder series), and the official GitHub CodeQL CLI (evaluating 52 security and taint-tracking rules). I formulated three controlled experimental conditions: (A) Baseline prompt generation, (B) Security-aware prompt prefixing, and (C) Scanner-guided repair incorporating authentic CodeQL diagnostics (rule IDs, error descriptions, and line locations). To guarantee scanner reliability, I implemented ground-truth positive (Flask untrusted redirect in debug mode) and negative controls, confirming identical detection across CSV and SARIF parsers.
+To test this systematically, I engineered an automated empirical evaluation harness integrating the LLMSecEval benchmark, open-weight models (Qwen2.5-Coder series), and the official GitHub CodeQL CLI (evaluating 52 security and taint-tracking rules). I formulated three controlled experimental conditions: (A) Baseline prompt generation, (B) Security-aware prompt prefixing, and (C) Closed-loop scanner-guided repair incorporating authentic CodeQL diagnostics (rule IDs, error descriptions, and line locations). To guarantee scanner reliability, I implemented ground-truth positive (Flask untrusted redirect in debug mode) and negative controls, confirming identical detection across CSV and SARIF parsers.
 
-Empirical evaluation revealed a critical asymmetry: while security-aware prompting was completely ineffective (100% vulnerability persistence), scanner-guided repair successfully resolved localized configuration vulnerabilities (e.g., eliminating Flask debug mode), but failed on dataflow taint-tracking vulnerabilities (e.g., remote URL redirection, CWE-601), resulting in a 75% alert persistence rate. Furthermore, cyclomatic complexity (Radon) and lines of code remained stable, demonstrating that the model exhibited vulnerability inertia rather than code inflation or secondary bug introduction. 
+In a completed feasibility pilot using Qwen2.5-Coder-1.5B-Instruct across representative CWE-20 tasks, empirical evaluation revealed a critical asymmetry: while security-aware prompting was completely ineffective (100% vulnerability persistence across 4 baseline alert instances), scanner-guided repair successfully resolved localized configuration flaws (eliminating Flask debug mode, 25.0% resolution rate), but failed on dataflow taint-tracking vulnerabilities (remote URL redirection, CWE-601, 75.0% persistence rate). Furthermore, Radon cyclomatic complexity (CC=1.33) and lines of code (LOC=11.0) remained unchanged, demonstrating vulnerability inertia rather than code bloat or secondary bug explosion.
 
-I authored the complete scholarly manuscript, open-sourced the replication artifacts, and created a Kaggle cloud-scaling notebook for full-benchmark reproduction.
+Having verified the pipeline and metrics locally, I open-sourced the replication artifacts, created an automated cloud-GPU scaling notebook for evaluating the complete 83-task benchmark as future work, and authored a comprehensive research manuscript.
 
 Repository: https://github.com/jackyhitter/AI_security_report
 Paper Manuscript: https://github.com/jackyhitter/AI_security_report/blob/main/paper/research_paper.pdf
@@ -75,3 +75,42 @@ My academic trajectory has consistently combined rigorous theoretical study with
 
 At OIST, I am eager to collaborate with faculty and researchers working at the intersection of machine learning, software systems, and reliable computing. An internship at OIST would allow me to contribute directly to ongoing laboratory projects while learning how to scale my investigations toward larger benchmark distributions and formal verification frameworks. Furthermore, conducting research in OIST’s vibrant international community would provide invaluable preparation for my planned transition into graduate studies. I am eager to bring my technical skills, empirical rigor, and deep curiosity to the OIST research community.
 ```
+
+---
+
+## Field 5: CV / Resume Research Project Entry (Copy-Paste)
+
+### Project Heading
+**The Whack-a-Mole Effect in AI Code Repair** | *Independent Research*  
+*Repository: [github.com/jackyhitter/AI_security_report](https://github.com/jackyhitter/AI_security_report) | October 2026*
+
+### Evidence-Based Bullets (Select 2 or 3)
+- **Engineered an automated closed-loop evaluation harness** combining `Qwen2.5-Coder` models with the standalone GitHub CodeQL CLI (52 security rules) and Radon complexity analysis across three controlled conditions (Baseline, Security-Aware, Scanner-Guided Repair).
+- **Executed empirical pilot study ($N=3$) and ground-truth control suite**, demonstrating that scanner feedback resolves configuration flaws (`py/flask-debug`, 25.0% resolution) but exhibits vulnerability inertia on taint-flow vulnerabilities (`py/url-redirection`, 75.0% persistence) with zero secondary findings ($\text{New}=0$).
+- **Authored complete open-science deliverable suite**, including formatted preprint (PDF/DOCX), audited task-level CSV datasets, and a Kaggle GPU pipeline for scaling across the full 83-task LLMSecEval benchmark.
+
+---
+
+## Field 6: GitHub Repository Description (Copy-Paste for Repo About)
+
+```text
+Empirical pilot study investigating scanner-guided AI code repair with CodeQL (52 rules), Qwen2.5-Coder, and LLMSecEval across Baseline, Security-Aware, and Repair conditions.
+```
+
+---
+
+## Field 7: Exact Instructions for Inserting Public DOI After Zenodo Publication
+
+Once you complete the Zenodo upload using `PUBLICATION_AND_UPLOAD_GUIDE.md`:
+1. Copy your assigned Zenodo DOI URL (e.g., `https://doi.org/10.5281/zenodo.1234567`).
+2. In `OIST_APPLICATION_TEXT.md`, update **Field 2: Publications / Preprints** to use **Option A** with the live DOI:
+   ```text
+   Naman, A. (2026). "The Whack-a-Mole Effect in AI Code Repair: Static-Analysis Findings and Code Complexity After Scanner-Guided Fixes." Independent Research Preprint. DOI: 10.5281/zenodo.1234567. Available at: https://github.com/jackyhitter/AI_security_report
+   ```
+3. In `README.md`, add the Zenodo DOI badge at the top:
+   ```markdown
+   [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1234567.svg)](https://doi.org/10.5281/zenodo.1234567)
+   ```
+4. In your CV / Resume, append the DOI link next to the project title or preprint citation.
+5. In the OIST application portal, paste the updated Option A citation into the Publications/Preprints input box.
+

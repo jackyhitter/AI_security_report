@@ -2,7 +2,8 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![CodeQL: 52 Rules](https://img.shields.io/badge/CodeQL-Python--Security--Extended-brightgreen.svg)](https://codeql.github.com/)
-[![Model: Qwen2.5-Coder](https://img.shields.io/badge/Model-Qwen2.5--Coder-orange.svg)](https://huggingface.co/Qwen)
+[![Model: Qwen2.5-Coder-1.5B-Instruct](https://img.shields.io/badge/Model-Qwen2.5--Coder--1.5B--Instruct-orange.svg)](https://huggingface.co/Qwen/Qwen2.5-Coder-1.5B-Instruct)
+[![Pilot Sample: N=3 Tasks](https://img.shields.io/badge/Pilot%20Sample-N%3D3%20Tasks%20(LLMSecEval)-informational.svg)](paper/task_level_results.csv)
 [![Paper: PDF & DOCX](https://img.shields.io/badge/Paper-PDF%20%7C%20DOCX-purple.svg)](paper/)
 
 An empirical software security investigation evaluating whether scanner-guided fixes for AI-generated Python code eliminate static analysis alerts, leave vulnerabilities unresolved, trigger secondary vulnerabilities ("Whack-a-Mole"), or increase structural code complexity.
@@ -15,28 +16,30 @@ An empirical software security investigation evaluating whether scanner-guided f
 
 ## 📌 Research Overview
 
-While Large Language Models (LLMs) accelerate code generation, ~40% of generated snippets contain security vulnerabilities. A common remediation strategy is **scanner-guided repair**, wherein Static Application Security Testing (SAST) tools feed alert diagnostics back to the model for iterative fixing.
+While Large Language Models (LLMs) accelerate code generation, studies indicate that ~40% of generated snippets contain security weaknesses. A common remediation strategy is **scanner-guided repair**, wherein Static Application Security Testing (SAST) tools feed alert diagnostics back to the model for iterative fixing.
 
-This study asks:
+This preliminary working paper evaluates a feasibility pilot ($N=3$ Python tasks from LLMSecEval) using `Qwen/Qwen2.5-Coder-1.5B-Instruct`:
 > **When an AI model repairs generated Python code using actual static-analysis findings, does the repair remove existing alerts while leaving some unresolved, introduce new alert instances, or increase code complexity?**
 
+*(Note: While the full benchmark spans 83 tasks, this working paper reports audited results from the completed 3-task pilot. Full-dataset scaling is supported via the cloud GPU notebook in `notebooks/experiment.ipynb`.)*
+
 ### Key Findings
-1. **Security-Aware Prompting Fails (100% Persistence):** Prepending explicit security constraints to the prompt had zero impact on reducing baseline vulnerabilities.
+1. **Security-Aware Prompting Fails (100% Persistence):** Prepending explicit security constraints to the prompt had zero impact on reducing baseline vulnerabilities across all 4 baseline alert instances.
 2. **Asymmetric Scanner-Guided Repair (25% Resolved, 75% Persisted):**
-   - **Configuration-Level Flaws** (e.g., `py/flask-debug`) were successfully resolved upon receiving diagnostic feedback.
-   - **Taint-Flow Flaws** (e.g., `py/url-redirection` under CWE-601) persisted across all repair attempts.
-3. **Vulnerability Inertia, Not Secondary Flaws:** In our evaluated sample, the model did not introduce new distinct rules ($\text{New} = 0$), but rather exhibited *vulnerability inertia* by reproducing the vulnerable taint flow.
-4. **Complexity Invariance:** Cyclomatic Complexity ($\text{CC} = 2$) and Lines of Code ($\text{LOC} = 11 \rightarrow 12$) remained constant, showing models do not add defensive branching.
+   - **Configuration-Level Flaws** (e.g., `py/flask-debug`) were successfully resolved upon receiving diagnostic feedback (1/4 alerts resolved, 25.0%).
+   - **Taint-Flow Flaws** (e.g., `py/url-redirection` under CWE-601) persisted across all repair attempts (3/4 alerts persisted, 75.0%).
+3. **Vulnerability Inertia, Not Secondary Flaws:** In our evaluated pilot sample, the model did not introduce new distinct rules ($\text{New} = 0$), but rather exhibited *vulnerability inertia* by reproducing the vulnerable taint flow.
+4. **Complexity Invariance:** Radon Cyclomatic Complexity ($\text{CC} = 0, 2, 2$; Mean 1.33) and Lines of Code ($\text{LOC} = 10, 11, 12$; Mean 11.0) remained constant before and after repair.
 
 ---
 
 ## 📊 Summary Results Table
 
-| Experimental Condition | Total Alerts | Mean / Task | Resolution Rate | Persistence Rate | Mean CC | Mean LOC |
-| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Condition A: Baseline** | 4 | 1.33 | — | — | 1.33 | 11.0 |
-| **Condition B: Security-Aware** | 4 | 1.33 | 0.0% | 100.0% | 1.33 | 11.0 |
-| **Condition C: Scanner-Guided Repair** | 3 | 1.00 | **25.0%** | **75.0%** | 1.33 | 11.0 |
+| Experimental Condition | Total Tasks | Tasks w/ Alerts | Total Alerts | Mean / Task | Resolution Rate | Persistence Rate | Mean CC | Mean LOC |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Condition A: Baseline** | 3 | 2 | 4 | 1.33 | — | — | 1.33 | 11.0 |
+| **Condition B: Security-Aware** | 3 | 2 | 4 | 1.33 | 0.0% (0/4) | 100.0% (4/4) | 1.33 | 11.0 |
+| **Condition C: Scanner-Guided Repair** | 3 | 2 | 3 | 1.00 | **25.0% (1/4)** | **75.0% (3/4)** | 1.33 | 11.0 |
 
 *Detailed task audit logs: [`paper/task_level_results.csv`](paper/task_level_results.csv).*
 
@@ -59,7 +62,9 @@ This study asks:
 ├── notebooks/
 │   └── experiment.ipynb           # Cloud/Kaggle-ready full dataset scaling notebook
 ├── src/
-│   └── pilot.py                   # Automated experiment runner with ETA timers
+│   ├── pilot.py                   # Automated experiment runner with ETA timers
+│   ├── build_paper_assets.py      # Generates CSV tables and publication charts
+│   └── generate_pdf.py            # Formats and renders research_paper.pdf
 ├── tests/
 │   └── test_codeql_controls.py    # Known-positive and known-negative ground truth test
 ├── results/
@@ -102,7 +107,8 @@ python src/pilot.py
 
 ### 4. Build Paper Tables & Figures
 ```bash
-python scratch/build_paper_assets.py
+python src/build_paper_assets.py
+python src/generate_pdf.py
 ```
 
 ---

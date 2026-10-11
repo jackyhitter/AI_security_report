@@ -34,14 +34,15 @@ Zenodo (operated by CERN) provides immediate, citable, persistent Digital Object
 
 ### 2.2 Description Text (Copy-Paste into Zenodo Description)
 ```markdown
-This empirical research investigates the "Whack-a-Mole" effect in automated AI code repair: whether feeding static-analysis scanner findings back to a code-generation model eliminates security vulnerabilities, leaves them unresolved, introduces secondary findings, or increases structural code complexity.
+This preliminary working paper presents an empirical pilot study investigating the "Whack-a-Mole" effect in automated AI code repair: whether feeding static-analysis scanner findings back to a code-generation model eliminates security vulnerabilities, leaves them unresolved, introduces secondary findings, or increases structural code complexity.
 
 Key Contributions:
-1. Closed-Loop Evaluation Pipeline: Integrates the LLMSecEval benchmark, official GitHub CodeQL CLI (evaluating 52 security and taint-tracking rules), and Qwen2.5-Coder under three controlled conditions (Baseline, Security-Aware Prompting, and Scanner-Guided Repair).
-2. Ground-Truth Control Validation: Verifies CodeQL detection and SARIF parsing against ground-truth positive (Flask untrusted redirect in debug mode) and negative controls.
-3. Empirical Findings: Demonstrates that security-aware prompt prefixing is ineffective (100% vulnerability persistence); scanner-guided repair successfully resolves localized configuration flaws (Flask debug mode) but fails on dataflow taint vulnerabilities (URL redirection), resulting in a 75% alert persistence rate. Code complexity (Radon cyclomatic complexity) and LOC remained stable.
+1. Closed-Loop Evaluation Pipeline: Integrates the LLMSecEval benchmark, official GitHub CodeQL CLI (evaluating 52 security and taint-tracking rules), and the open-weight Qwen2.5-Coder-1.5B-Instruct model under three controlled conditions (Baseline, Security-Aware Prompting, and Scanner-Guided Repair).
+2. Ground-Truth Control Validation: Verifies CodeQL detection and SARIF parsing against ground-truth positive (Flask untrusted redirect in debug mode) and negative controls, confirming identical detection across CSV and SARIF parsers.
+3. Empirical Pilot Findings (N = 3 Tasks): Demonstrates that security-aware prompt prefixing was completely ineffective (100% vulnerability persistence across 4 baseline alert instances); scanner-guided repair successfully resolved localized configuration flaws (Flask debug mode; 1/4 alerts, 25.0% resolution rate), but failed on dataflow taint vulnerabilities (URL redirection, CWE-601; 3/4 alerts, 75.0% persistence rate). Code complexity (Radon cyclomatic complexity = 1.33) and LOC (11.0) remained constant, and no secondary findings were introduced (New = 0).
+4. Scalable Replication: Provides an automated pipeline and Kaggle cloud GPU notebook to scale evaluation across the full 83-task LLMSecEval benchmark.
 
-Includes full manuscript (PDF), experimental dataset tables, raw scanner findings, and replication instructions.
+Includes full manuscript (PDF), audited task-level and summary CSV tables, and complete replication instructions.
 GitHub Repository: https://github.com/jackyhitter/AI_security_report
 Author Portfolio: https://anunay-naman-portfolio.vercel.app/
 ```

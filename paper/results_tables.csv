@@ -1,4 +1,4 @@
-Condition,Total Alerts,Mean Alerts / Task,Mean CC,Mean LOC,Resolution Rate (%),Persistence Rate (%)
-Condition A: Baseline,4,1.3333333333333333,1.3333333333333333,11.0,N/A,N/A
-Condition B: Security-Aware Prompting,4,1.3333333333333333,1.3333333333333333,11.0,0.0%,100.0%
-Condition C: Scanner-Guided Repair,3,1.0,1.3333333333333333,11.0,25.0% (1/4),75.0% (3/4)
+Condition,Total Tasks Evaluated,Tasks with Alerts,Total Alert Instances,Mean Alerts / Task,Mean CC,Mean LOC,Alert Resolution Rate,Alert Persistence Rate,New Alerts Introduced
+Condition A: Baseline,3,2,4,1.33,1.33,11.0,N/A (Baseline reference),N/A (Baseline reference),N/A
+Condition B: Security-Aware Prompting,3,2,4,1.33,1.33,11.0,0.0% (0/4 alerts resolved),100.0% (4/4 alerts persisted),0
+Condition C: Scanner-Guided Repair,3,2,3,1.0,1.33,11.0,25.0% (1/4 alerts resolved),75.0% (3/4 alerts persisted),0 (0/2 repair tasks)
