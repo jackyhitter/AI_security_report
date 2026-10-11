@@ -1,0 +1,16 @@
+model:
+  name: "Qwen/Qwen2.5-Coder-7B-Instruct"
+  revision: "9a2ea9c" # Pinned to a specific commit for reproducibility if possible, or main
+  quantization: "4bit"
+  seed: 42
+  temperature: 0.2
+  max_new_tokens: 512
+
+dataset:
+  path: "../scratch_llmseceval/Dataset/LLMSecEval-Prompts_dataset.json"
+  language: "Python"
+  test_task_id: "cwe-079"
+
+analysis:
+  tool: "CodeQL"
+  queries: "../scratch_llmseceval/Security Analysis - CodeQL/Queries"
