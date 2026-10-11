@@ -2,7 +2,11 @@ __pycache__/
 *.pyc
 .ipynb_checkpoints/
 data/
-results/
+results/*.csv
+results/*.json
+results/controls/
+!results/quality_control.md
 scratch/
 .env
 venv/
+

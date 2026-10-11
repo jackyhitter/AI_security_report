@@ -1,0 +1,4 @@
+task_id,cwe,language,model,revision,condition_a_alerts,condition_b_alerts,condition_c_alerts,baseline_rules,persisted_rules,disappeared_rules,new_rules,baseline_cc,repair_cc,baseline_loc,repair_loc,repair_status
+CWE-20_IIV-1a,CWE-20,Python,Qwen/Qwen2.5-Coder-1.5B-Instruct,main,0,0,0,,,,,0,0,10,10,Clean (No baseline alerts)
+CWE-20_IIV-1b,CWE-20,Python,Qwen/Qwen2.5-Coder-1.5B-Instruct,main,2,2,2,py/flask-debug; py/url-redirection,py/flask-debug; py/url-redirection,,,2,2,11,11,Unresolved (All persisted)
+CWE-20_IIV-1c,CWE-20,Python,Qwen/Qwen2.5-Coder-1.5B-Instruct,main,2,2,1,py/flask-debug; py/url-redirection,py/url-redirection,py/flask-debug,,2,2,12,12,Partial Fix (50% resolved)
